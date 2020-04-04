@@ -1,0 +1,39 @@
+/* media query mixins */
+@mixin media-query($arg...) {
+    @if length($arg) == 1 {
+        @media screen and (max-width: nth($arg, 1)) {
+            @content;
+        }
+    }
+
+    @if length($arg) == 2 {
+        @media screen and (min-width: nth($arg, 1)) and (max-width: nth($arg, 2)) {
+            @content;
+        }
+    }
+}
+
+/* keyframe animation */
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+/* clear fix */
+@mixin clearfix {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
