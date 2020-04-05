@@ -32,7 +32,7 @@
 footer.footer-container {
 	height: 100px;
 	width: 100%;
-	background-color: rgba(4, 23, 27, 0.973);
+	background-color: #00040e;
 
 	.footer-wrapper {
 		align-items: center;

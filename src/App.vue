@@ -1,23 +1,28 @@
 <template>
   <div id="app">
-    <header-component />
-    <software-list :software="software" />
+    <!-- banner/header component -->
+    <!-- <banner-component /> -->
+    <!-- software list -->
+    <!-- <software-list :software="software" /> -->
+    <software-component />
     <footer-component />
   </div>
 </template>
 
 <script>
-import SoftwateList from './components/SoftwareList';
-import HeaderComponent from './components/HeaderComponent';
+// import SoftwateList from "./components/SoftwareListComponent";
+import SoftwareComponent from './components/SoftwareComponent';
+// import BannerComponent from "./components/BannerComponent";
 import FooterComponent from './components/FooterComponent';
 import axios from './api/axios';
 
 export default {
   name: 'App',
   components: {
-    'software-list': SoftwateList,
-    'header-component': HeaderComponent,
+    // "software-list": SoftwateList,
+    // "banner-component": BannerComponent,
     'footer-component': FooterComponent,
+    'software-component': SoftwareComponent,
   },
   data() {
     return {
@@ -28,6 +33,7 @@ export default {
     axios
       .get('api/softwares')
       .then((response) => {
+        // console.log(response);
         if (response.data.success) return (this.software = response.data.data);
       })
       .catch((error) => {
