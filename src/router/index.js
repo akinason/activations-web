@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import SoftwareComponent from '@/components/SoftwareComponent';
+import BillingComponent from '@/components/BillingComponent';
 import { bus } from '../main';
 
 Vue.use(VueRouter);
@@ -16,12 +18,17 @@ const router = new VueRouter({
     {
       path: '/about',
       name: 'About',
-      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+      component: () => import(/* webpackChunkName: "about" */ '../views/About'),
     },
     {
       path: '/software/:id',
       name: 'Software',
-      component: () => import(/* webpackChunkName: "about" */ '@/components/SoftwareComponent'),
+      component: SoftwareComponent,
+    },
+    {
+      path: '/software/:id/license',
+      name: 'Billing',
+      component: BillingComponent,
     },
   ],
 });
