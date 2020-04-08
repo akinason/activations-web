@@ -75,6 +75,7 @@
         text-transform: uppercase;
         letter-spacing: 0.67px;
         color: #fff;
+        font-weight: 600;
 
         &:hover {
           color: darken(skyblue, 23%);
