@@ -95,7 +95,7 @@ export default {
   border: 1.58px solid rgba(106, 243, 93, 0.575);
 
   p {
-    color: rgb(30, 245, 11);
+    color: rgb(12, 148, 0);
   }
 }
 

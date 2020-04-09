@@ -12,8 +12,9 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/software',
       name: 'Home',
+      alias: '/',
       component: Home,
     },
     {
@@ -41,7 +42,19 @@ const router = new VueRouter({
       name: 'SuccessPayment',
       component: () => import(/* webpackChunkName: "success-payment" */ '../views/PaymentSuccess'),
     },
+    {
+      path: '*',
+      redirect: '/',
+    },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  if (!to.matched.length) {
+    next('/');
+  } else {
+    next();
+  }
 });
 
 router.beforeResolve((to, from, next) => {
