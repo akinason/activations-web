@@ -1,78 +1,170 @@
 <template>
-  <div class="confirm-billing-container modal">
-    <div class="confirm-billing-wrapper">
-      <h3 id="title">verify &amp; confirm payments</h3>
-      <form action="" method="post">
-        <div class="confirm-billing grid-container">
-          <div class="client-details">
-            <h3>your details</h3>
-            <div class="form-control flex-container">
-              <label for="name">Name</label>
-              <input readonly id="name" name="name" :value="user.name" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="email">email</label>
-              <input readonly id="email" name="email" :value="user.email" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="address">address</label>
-              <input readonly id="address" name="address" :value="user.address" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="phone">phone</label>
-              <input readonly id="phone" name="mobile" :value="user.phone" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="country">country</label>
-              <input readonly id="country" name="country" :value="user.iso2" />
-            </div>
-          </div>
-          <div class="license-details">
-            <h3>license</h3>
-            <div class="form-control flex-container">
-              <label for="duration">duration</label>
-              <input readonly id="duration" :value="$route.query.duration + ' days'" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="price">price</label>
-              <input readonly id="price" :value="'$' + $route.query.price" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="currency">currency</label>
-              <input readonly id="currency" name="currency" :value="$route.query.currency" />
-            </div>
-            <div class="form-control flex-container">
-              <label for="type">type</label>
-              <input readonly id="type" :value="$route.query.type" />
-            </div>
-            <input type="hidden" name="license" :value="$route.query.id" />
-            <input type="hidden" name="software" :value="$route.params.id" />
-          </div>
-        </div>
-        <div class="btn-container flex-container">
-          <button type="submit">confirm and pay</button>
-          <router-link :to="{ path: `/software/${$route.params.id}` }">cancel</router-link>
-        </div>
-      </form>
-      <button @click="closeModal" class="close">x</button>
+  <fragment>
+    <div id="header">
+      <header-component />
     </div>
-  </div>
+    <div class="confirm-billing-container modal">
+      <div class="confirm-billing-wrapper">
+        <h3 id="title">verify &amp; confirm payments</h3>
+        <form action="" method="post" @submit.prevent="generatePayment">
+          <div class="confirm-billing grid-container">
+            <div class="client-details">
+              <h3>your details</h3>
+              <div class="form-control flex-container">
+                <label for="name">Name</label>
+                <input readonly id="name" name="name" :value="$route.query.name" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="email">email</label>
+                <input readonly id="email" name="email" :value="$route.query.email" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="address">address</label>
+                <input readonly id="address" name="address" :value="$route.query.address" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="phone">phone</label>
+                <input readonly id="phone" name="mobile" :value="'+' + $route.query.dialCode + ' ' + $route.query.phone" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="country">country</label>
+                <input readonly id="country" name="country" :value="$route.query.country" />
+              </div>
+            </div>
+            <div class="license-details">
+              <h3>license</h3>
+              <div class="form-control flex-container">
+                <label for="duration">duration</label>
+                <input readonly id="duration" :value="$route.query.duration + ' days'" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="price">price</label>
+                <input readonly id="price" :value="'$' + $route.query.price" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="currency">currency</label>
+                <input readonly id="currency" name="currency" :value="$route.query.currency" />
+              </div>
+              <div class="form-control flex-container">
+                <label for="type">type</label>
+                <input readonly id="type" :value="$route.query.type" />
+              </div>
+              <input type="hidden" name="license" :value="$route.params.license_id" />
+              <input type="hidden" name="software" :value="$route.params.software_id" />
+            </div>
+          </div>
+          <div class="btn-container flex-container">
+            <button type="submit">confirm and pay</button>
+            <router-link :to="{ path: `/software/${$route.params.software_id}` }">cancel</router-link>
+          </div>
+        </form>
+      </div>
+    </div>
+  </fragment>
 </template>
 
 <script>
-// import axios from "../api/axios";
-// import { bus } from "../main";
+import axios from '../api/axios';
+import { bus } from '../main';
+import HeaderComponent from '@/components/HeaderComponent';
+import { Fragment } from 'vue-fragment';
 
 export default {
   name: 'ConfirmBilling',
-  props: ['user'],
+  components: {
+    'header-component': HeaderComponent,
+    fragment: Fragment,
+  },
   data() {
-    return {};
+    return {
+      isProduction: false,
+    };
   },
   methods: {
-    closeModal() {
-      this.$emit('closeModal', false);
+    generatePayment() {
+      bus.$emit('toggleLoading');
+      const data = { license: this.$route.params.license_id, software: this.$route.params.software_id, amount: this.$route.query.price, currency: this.$route.query.currency, name: this.$route.query.name, email: this.$route.query.email, address: this.$route.query.address, mobile: `+${this.$route.query.dialCode} ${this.$route.query.phone}`, country: this.$route.query.iso2 };
+      // initialize payment
+      try {
+        axios
+          .post('api/orders', data)
+          .then((response) => {
+            const data = response.data;
+            // error in order request
+            if (!data.success && data.error) {
+              bus.$emit('toggleLoading');
+              return bus.$emit('popup', { success: false, msg: 'Request failed' });
+            }
+            // success in order request
+            try {
+              // request fluterwave payment
+              const x = window.getpaidSetup({
+                PBFPubKey: data.flutterwave_public_key,
+                customer_email: data.data.email,
+                amount: parseFloat(data.data.amount),
+                customer_phone: data.data.mobile,
+                currency: data.data.currency,
+                txref: data.data.reference,
+                onclose: function() {},
+                callback: function(response) {
+                  // const txref = response.tx.txRef;
+                  if (response.respcode === '00' || response.respcode === '0') {
+                    // successful transaction
+                    try {
+                      // update server order
+                      axios
+                        .put(`api/orders/${data.data.id}`, { payment_response: response })
+                        .then((response) => {
+                          console.log(response);
+                          if (!response.data.success) {
+                            bus.$emit('toggleLoading');
+                            return bus.$emit('popup', { success: false, msg: 'Order already paid or License key already used' });
+                          }
+                          this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
+                        })
+                        .catch((error) => {
+                          if (error) {
+                            bus.$emit('toggleLoading');
+                            return bus.$emit('popup', { success: false, msg: 'Order update failed' });
+                          }
+                        });
+                    } catch (error) {
+                      // failed update order
+                      bus.$emit('toggleLoading');
+                      return bus.$emit('popup', { success: false, msg: 'Request failed' });
+                    }
+                  } else {
+                    // failed transaction
+                    bus.$emit('toggleLoading');
+                    return bus.$emit('popup', { success: false, msg: 'Request failed' });
+                  }
+                  x.close();
+                },
+              });
+            } catch (error) {
+              if (error) {
+                bus.$emit('toggleLoading');
+                return bus.$emit('popup', { success: false, msg: 'Request failed' });
+              }
+            }
+          })
+          .catch((error) => {
+            if (error) {
+              bus.$emit('toggleLoading');
+              return bus.$emit('popup', { success: false, msg: 'Request failed' });
+            }
+          });
+      } catch (error) {
+        bus.$emit('toggleLoading');
+        return bus.$emit('popup', { success: false, msg: 'Request failed' });
+      }
     },
+  },
+  mounted() {
+    let flutterwaveScript = document.createElement('script');
+    flutterwaveScript.setAttribute('src', this.isProduction ? 'https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js' : 'https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/flwpbf-inline.js');
+    flutterwaveScript.setAttribute('type', 'text/javascript');
+    document.head.appendChild(flutterwaveScript);
   },
 };
 </script>
@@ -85,15 +177,16 @@ export default {
   box-shadow: rgba(37, 1, 44, 0.822) 0.43px 1px 3px;
   padding: 30px;
   width: 677px;
-  margin: 0 auto;
+  margin: 60px auto;
   border-radius: 3px;
 
   @include media-query(715px) {
     width: 80%;
+    margin: 30px auto;
   }
 
   @include media-query(665px) {
-		padding: 15px;
+    padding: 15px;
     width: 95%;
   }
   .confirm-billing-wrapper {
@@ -196,15 +289,14 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-
   }
 
   .btn-container {
-		margin: 2.67em 0 0;
+    margin: 2.67em 0 0;
 
-		@include media-query(550px) {
-			flex-wrap: wrap;
-		}
+    @include media-query(550px) {
+      flex-wrap: wrap;
+    }
 
     button,
     a {

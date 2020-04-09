@@ -31,16 +31,19 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .popup-container {
   position: fixed;
   width: 100%;
-  height: 100vh;
-  z-index: 1;
+  z-index: 99;
   display: flex;
   justify-content: center;
-  align-items: center;
   opacity: 1;
+  top: 24%;
+
+  @media only screen and (max-width: 715px) {
+    top: 17%;
+  }
 }
 
 .wrapper {

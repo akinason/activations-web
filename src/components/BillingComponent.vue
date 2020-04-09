@@ -1,6 +1,6 @@
 <template>
-  <div class="billing-container" :class="iscomplete ? 'completed' : ''">
-    <div class="header">
+  <fragment>
+    <div id="header">
       <header-component id="header-component" />
     </div>
     <div class="billing-wrapper">
@@ -35,22 +35,19 @@
         </div>
       </div>
     </div>
-
-    <!-- modal confirm container -->
-    <confirm-billing-component @closeModal="closeModal($event)" v-if="iscomplete" :user="{ name, email, address, phone, iso2, license }" />
-  </div>
+  </fragment>
 </template>
 
 <script>
 import HeaderComponent from '@/components/HeaderComponent';
-import ConfirmBillingComponent from '@/components/ConfirmBillingComponent';
+import { Fragment } from 'vue-fragment';
 import { bus } from '../main';
 
 export default {
   name: 'Billing',
   components: {
     'header-component': HeaderComponent,
-    'confirm-billing-component': ConfirmBillingComponent,
+    fragment: Fragment,
   },
   data() {
     return {
@@ -58,10 +55,9 @@ export default {
       email: null,
       address: null,
       phone: null,
+      dialCode: null,
       country: null,
       iso2: null,
-      license: null,
-      iscomplete: false,
       isValid: false,
     };
   },
@@ -78,11 +74,12 @@ export default {
       let details = document.querySelector('.details-container');
       details.style.opacity = 0;
     },
-    validateNumber({ isValid }) {
-      return (this.isValid = isValid);
+    validateNumber({ isValid, country }) {
+      return (this.isValid = isValid), (this.dialCode = country.dialCode);
     },
 
     handleBillingSubmit() {
+      bus.$emit('toggleLoading');
       let errors = [];
       if (!this.name || this.name.length < 5) {
         errors.push({ msg: 'Please enter full name' });
@@ -102,43 +99,22 @@ export default {
 
       if (errors.length > 0) {
         errors.push({ success: false });
+        bus.$emit('toggleLoading');
         return bus.$emit('popup', errors);
       }
 
-      this.iscomplete = true;
-    },
-    closeModal(event) {
-      this.iscomplete = event;
+      this.$router.replace({
+        path: `/software/${this.$route.params.id}/license/${this.$route.query.id}`,
+        query: { name: this.name, email: this.email, address: this.address, phone: this.phone, iso2: this.iso2, dialCode: this.dialCode, country: this.country, duration: this.$route.query.duration, price: this.$route.query.price, currency: this.$route.query.currency, type: this.$route.query.type },
+      });
+      bus.$emit('toggleLoading');
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../scss/_mixins';
-
-.billing-container > .header {
-  width: 100%;
-  background-color: #031545;
-}
-
-.billing-container {
-  height: calc(100vh - 40px);
-
-  @include media-query(1200px, 1440px) {
-    height: calc(100vh - 110px);
-  }
-
-  @include media-query(1441px, 2960px) {
-    height: calc(100vh - 336px);
-  }
-}
-
-.billing-container.completed {
-  @include media-query(715px) {
-    height: 130vh;
-  }
-}
 
 .billing-wrapper {
   width: 100%;
@@ -148,6 +124,11 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 60px;
+
+  @include media-query(715px) {
+    margin: 30px auto;
+  }
 
   .billing {
     flex-direction: column;
@@ -208,6 +189,7 @@ export default {
         margin-bottom: 0.96em;
         color: rgb(172, 172, 172);
         user-select: none;
+        text-align: center;
       }
 
       .info-container {
@@ -249,7 +231,7 @@ export default {
         form {
           display: flex;
           flex-direction: column;
-          align-items: flex-end;
+          align-items: center;
 
           button {
             width: 139px;
@@ -316,26 +298,12 @@ export default {
 .vue-tel-input {
   width: 100%;
   margin: 3px 0;
+  height: 42px;
 
   &:focus-within,
   &:focus {
     box-shadow: #03154562 0.45px 0.51px 3px !important;
     border-color: #bbb !important;
-  }
-}
-
-.confirm-billing-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -30%);
-
-  @include media-query(1441px, 2960px) {
-    transform: translate(-50%, -70%);
-  }
-
-  @include media-query(715px) {
-    transform: translate(-50%, -30%);
   }
 }
 </style>

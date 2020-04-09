@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SoftwareComponent from '@/components/SoftwareComponent';
 import BillingComponent from '@/components/BillingComponent';
+import ConfirmBillingComponent from '@/components/ConfirmBillingComponent';
 import { bus } from '../main';
 
 Vue.use(VueRouter);
@@ -29,6 +30,16 @@ const router = new VueRouter({
       path: '/software/:id/license',
       name: 'Billing',
       component: BillingComponent,
+    },
+    {
+      path: '/software/:software_id/license/:license_id',
+      name: 'ConfirmBilling',
+      component: ConfirmBillingComponent,
+    },
+    {
+      path: '/software/payment/:id',
+      name: 'SuccessPayment',
+      component: () => import(/* webpackChunkName: "success-payment" */ '../views/PaymentSuccess'),
     },
   ],
 });

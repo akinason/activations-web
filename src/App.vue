@@ -83,4 +83,9 @@ input {
   text-decoration: none;
   outline: none;
 }
+
+#header {
+  width: 100%;
+  background-color: #031545;
+}
 </style>

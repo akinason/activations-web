@@ -37,7 +37,6 @@
 <script>
 import HeaderComponent from './HeaderComponent';
 import { bus } from '../main';
-// import { bus } from "../main";
 
 export default {
   name: 'Banner',

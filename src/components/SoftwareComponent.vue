@@ -1,6 +1,6 @@
 <template>
-  <div class="software-container">
-    <div class="header">
+  <fragment class="software-container">
+    <div id="header">
       <header-component id="header-component" />
     </div>
     <div class="software-wrapper">
@@ -63,7 +63,7 @@
           <iframe :src="video_link(software.video_link)" width="100%" height="450px" frameborder="0" class="youtube" allowfullscreen></iframe>
         </div>
         <!-- licences payment -->
-        <div v-if="software.licenses">
+        <div id="license-wrapper" v-if="software.licenses">
           <div class="license-container flex-container">
             <div class="purchase-license" v-for="license in software.licenses" :key="license.id">
               <form action method="post">
@@ -78,11 +78,11 @@
         </div>
       </div>
     </div>
-    <router-view :key="$route.path" />
-  </div>
+  </fragment>
 </template>
 
 <script>
+import { Fragment } from 'vue-fragment';
 import HeaderComponent from './HeaderComponent';
 import { bus } from '../main';
 import axios from '../api/axios';
@@ -91,6 +91,7 @@ export default {
   name: 'Software',
   components: {
     'header-component': HeaderComponent,
+    fragment: Fragment,
   },
   data() {
     return {
@@ -357,13 +358,17 @@ export default {
   }
 
   // license payment
+  #license-wrapper {
+    padding: 30px;
+    background-color: #f1fbe157;
+  }
+
   .license-container {
     width: 100%;
     max-width: 520px;
     margin: auto;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4.56em;
 
     @include media-query(1460px, 2600px) {
       max-width: 560px;
@@ -389,6 +394,7 @@ export default {
         width: 100%;
         position: relative;
         border-radius: 5px;
+        background-color: rgba(126, 124, 245, 0.027);
 
         input {
           width: 100%;
@@ -399,7 +405,7 @@ export default {
           text-align: center;
           letter-spacing: 0.67px;
           border: none;
-          background-color: #fff;
+          background-color: transparent;
           cursor: default;
           user-select: none;
 
