@@ -90,11 +90,6 @@ export default {
           .post('api/orders', data)
           .then((response) => {
             const data = response.data;
-            // error in order request
-            if (!data.success && data.error) {
-              bus.$emit('toggleLoading');
-              return bus.$emit('popup', { success: false, msg: 'Request failed' });
-            }
             // success in order request
             try {
               // request fluterwave payment
@@ -105,11 +100,10 @@ export default {
                 customer_phone: data.data.mobile,
                 currency: data.data.currency,
                 txref: data.data.reference,
-                onclose: function() {
+                onclose: () => {
                   bus.$emit('toggleLoading');
-                  return bus.$emit('popup', { success: false, msg: 'Request failed' });
                 },
-                callback: function(response) {
+                callback: (response) => {
                   // const txref = response.tx.txRef;
                   if (response.respcode === '00' || response.respcode === '0') {
                     // successful transaction
@@ -118,27 +112,19 @@ export default {
                       axios
                         .put(`api/orders/${data.data.id}`, { payment_response: response })
                         .then((response) => {
-                          console.log(response);
-                          if (!response.data.success) {
-                            bus.$emit('toggleLoading');
-                            return bus.$emit('popup', { success: false, msg: 'Order already paid or License key already used' });
-                          }
-                          this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
+                          return this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
                         })
                         .catch((error) => {
-                          if (error) {
-                            bus.$emit('toggleLoading');
-                            return bus.$emit('popup', { success: false, msg: 'Order update failed' });
+                          if (error.response) {
+                            return bus.$emit('popup', { success: false, msg: error.response.data.error });
                           }
                         });
                     } catch (error) {
                       // failed update order
-                      bus.$emit('toggleLoading');
                       return bus.$emit('popup', { success: false, msg: 'Request failed' });
                     }
                   } else {
                     // failed transaction
-                    bus.$emit('toggleLoading');
                     return bus.$emit('popup', { success: false, msg: 'Request failed' });
                   }
                   x.close();
@@ -152,10 +138,18 @@ export default {
             }
           })
           .catch((error) => {
-            if (error) {
+            if (error.response) {
+              const errors = error.response.data.error;
+              let data = [];
+              for (error in errors) {
+                data.push({ msg: `${error}: ${errors[error][0]}` });
+              }
+              data.push({ success: false });
               bus.$emit('toggleLoading');
-              return bus.$emit('popup', { success: false, msg: 'Request failed' });
+              return bus.$emit('popup', data);
             }
+            bus.$emit('toggleLoading');
+            return bus.$emit('popup', { success: false, msg: 'Network Error' });
           });
       } catch (error) {
         bus.$emit('toggleLoading');

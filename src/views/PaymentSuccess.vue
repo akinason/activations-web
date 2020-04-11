@@ -19,9 +19,9 @@
         <!-- success-content -->
         <div class="success-content-container">
           <div class="success-content">
-            <h3 class="order-reference">order&#35;: 14372</h3>
+            <h3 class="order-reference">order&#35;: {{ $route.query.reference }}</h3>
             <p class="message">
-              vegas thanks for your payment. check your
+              {{ $route.query.name }} thanks for your payment. check your
               <i
                 ><strong><a target="_blank" href="https://mail.google.com/mail/u/0/#inbox">email</a></strong></i
               >
@@ -55,19 +55,15 @@ export default {
       bus.$emit('toggleLoading');
       try {
         axios
-          .post('api/orders/email/resend', { reference: 3574537 })
-          .then((response) => {
-            if (!response.data.success) {
-              bus.$emit('popup', { success: false, msg: 'Error occured while trying to resending mail' });
-              return bus.$emit('toggleLoading');
-            }
+          .post('api/orders/email/resend', { reference: this.$route.query.reference })
+          .then(() => {
             bus.$emit('popup', { success: true, msg: 'Mail resend successfully please check your mails' });
             return bus.$emit('toggleLoading');
           })
           .catch((error) => {
-            console.log(error);
-            if (error) {
-              bus.$emit('popup', { success: false, msg: 'Error occured while trying to resending mail' });
+            console.log(error.response);
+            if (error.response) {
+              bus.$emit('popup', { success: false, msg: error.response.data.error });
               return bus.$emit('toggleLoading');
             }
           });
