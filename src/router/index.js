@@ -23,6 +23,16 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "about" */ '../views/About'),
     },
     {
+      path: '/contact',
+      name: 'Contact',
+      component: () => import(/* webpackChunkName: "about" */ '../views/Contact'),
+    },
+    {
+      path: '/terms',
+      name: 'Terms',
+      component: () => import(/* webpackChunkName: "about" */ '../views/Terms'),
+    },
+    {
       path: '/software/:id',
       name: 'Software',
       component: SoftwareComponent,

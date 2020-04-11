@@ -1,17 +1,19 @@
 <template>
   <div class="popup-container">
-    <div :class="data.success ? 'wrapper success' : 'wrapper error'">
-      <div class="container success" v-if="Object.prototype.toString.call(data) == '[object Array]'">
-        <div class="popup-wrapper" v-for="(item, index) in data" :key="index">
-          <p :class="data.success ? 'success' : 'error'">{{ item.msg }}</p>
+    <div class="popup-wrapper">
+      <div :class="data.success ? 'wrapper success' : 'wrapper error'">
+        <div class="container success" v-if="Object.prototype.toString.call(data) == '[object Array]'">
+          <div class="popup-wrapper" v-for="(item, index) in data" :key="index">
+            <p :class="data.success ? 'success' : 'error'">{{ item.msg }}</p>
+          </div>
+          <button class="close" @click="closePopup">x</button>
         </div>
-        <button class="close" @click="closePopup">x</button>
-      </div>
-      <div class="container success" v-else>
-        <div class="popup-wrapper">
-          <p :class="data.success ? 'success' : 'error'">{{ data.msg }}</p>
+        <div class="container success" v-else>
+          <div class="popup-wrapper">
+            <p :class="data.success ? 'success' : 'error'">{{ data.msg }}</p>
+          </div>
+          <button class="close" @click="closePopup">x</button>
         </div>
-        <button class="close" @click="closePopup">x</button>
       </div>
     </div>
   </div>
@@ -32,23 +34,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../scss/_mixins';
+
 .popup-container {
   position: fixed;
   width: 100%;
+  height: 100%;
   z-index: 99;
-  display: flex;
-  justify-content: center;
   opacity: 1;
-  top: 24%;
+  background-color: rgba(211, 211, 211, 0.226);
 
-  @media only screen and (max-width: 715px) {
-    top: 17%;
+  & > .popup-wrapper {
+    width: fit-content;
+    min-width: 300px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 3px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @include media-query(767px) {
+      top: 17%;
+    }
   }
 }
 
 .wrapper {
   position: relative;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.945);
   border-radius: 6px;
   padding: 12px;
   min-width: 204px;

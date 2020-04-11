@@ -16,10 +16,10 @@
           <a href="#">youtube</a>
         </li>
         <li>
-          <a href="#">terms</a>
+          <router-link to="/terms">Terms</router-link>
         </li>
         <li>
-          <a href="#">contact</a>
+          <router-link to="/contact">Contact</router-link>
         </li>
       </ul>
     </div>

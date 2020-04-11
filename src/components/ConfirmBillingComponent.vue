@@ -105,7 +105,10 @@ export default {
                 customer_phone: data.data.mobile,
                 currency: data.data.currency,
                 txref: data.data.reference,
-                onclose: function() {},
+                onclose: function() {
+                  bus.$emit('toggleLoading');
+                  return bus.$emit('popup', { success: false, msg: 'Request failed' });
+                },
                 callback: function(response) {
                   // const txref = response.tx.txRef;
                   if (response.respcode === '00' || response.respcode === '0') {

@@ -64,6 +64,7 @@
         </div>
         <!-- licences payment -->
         <div id="license-wrapper" v-if="software.licenses">
+          <span class="labels title">Select license to activate tool</span>
           <div class="license-container flex-container">
             <div class="purchase-license" v-for="license in software.licenses" :key="license.id">
               <form action method="post">
@@ -361,6 +362,21 @@ export default {
   #license-wrapper {
     padding: 30px;
     background-color: #f1fbe157;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.39);
+    border-radius: 1px;
+
+    span.labels {
+      font-size: 16px;
+      letter-spacing: 0.65px;
+      line-height: 1.34;
+      text-transform: uppercase;
+      color: #949597;
+      font-weight: 540;
+      margin: 1em 0 2em;
+      text-align: center;
+      display: block;
+      user-select: none;
+    }
   }
 
   .license-container {
