@@ -73,11 +73,11 @@ export default {
   name: 'ConfirmBilling',
   components: {
     'header-component': HeaderComponent,
-    fragment: Fragment,
+    fragment: Fragment
   },
   data() {
     return {
-      isProduction: false,
+      isProduction: false
     };
   },
   methods: {
@@ -88,7 +88,7 @@ export default {
       try {
         axios
           .post('api/orders', data)
-          .then((response) => {
+          .then(response => {
             const data = response.data;
             // success in order request
             try {
@@ -96,14 +96,15 @@ export default {
               const x = window.getpaidSetup({
                 PBFPubKey: data.flutterwave_public_key,
                 customer_email: data.data.email,
-                amount: parseFloat(data.data.amount),
+                amount: data.data.amount,
                 customer_phone: data.data.mobile,
                 currency: data.data.currency,
                 txref: data.data.reference,
                 onclose: () => {
                   bus.$emit('toggleLoading');
                 },
-                callback: (response) => {
+                callback: response => {
+                  console.log(response);
                   // const txref = response.tx.txRef;
                   if (response.respcode === '00' || response.respcode === '0') {
                     // successful transaction
@@ -111,33 +112,41 @@ export default {
                       // update server order
                       axios
                         .put(`api/orders/${data.data.id}`, { payment_response: response })
-                        .then((response) => {
+                        .then(response => {
                           return this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
                         })
-                        .catch((error) => {
+                        .catch(error => {
+                          console.log('catch in update catch block');
+                          console.log(error);
                           if (error.response) {
                             return bus.$emit('popup', { success: false, msg: error.response.data.error });
                           }
                         });
                     } catch (error) {
+                      console.log('trycatch in update catch block');
+                      console.log(error);
                       // failed update order
                       return bus.$emit('popup', { success: false, msg: 'Request failed' });
                     }
                   } else {
                     // failed transaction
+                    console.log('catch in else block');
+                    console.log(response);
                     return bus.$emit('popup', { success: false, msg: 'Request failed' });
                   }
                   x.close();
-                },
+                }
               });
             } catch (error) {
+              console.log('trycatch in flutter catch block');
+              console.log(error);
               if (error) {
                 bus.$emit('toggleLoading');
                 return bus.$emit('popup', { success: false, msg: 'Request failed' });
               }
             }
           })
-          .catch((error) => {
+          .catch(error => {
             if (error.response) {
               const errors = error.response.data.error;
               let data = [];
@@ -152,17 +161,19 @@ export default {
             return bus.$emit('popup', { success: false, msg: 'Network Error' });
           });
       } catch (error) {
+        console.log('trycatch in request order catch block');
+        console.log(error);
         bus.$emit('toggleLoading');
         return bus.$emit('popup', { success: false, msg: 'Request failed' });
       }
-    },
+    }
   },
   mounted() {
     let flutterwaveScript = document.createElement('script');
     flutterwaveScript.setAttribute('src', this.isProduction ? 'https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js' : 'https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/flwpbf-inline.js');
     flutterwaveScript.setAttribute('type', 'text/javascript');
     document.head.appendChild(flutterwaveScript);
-  },
+  }
 };
 </script>
 

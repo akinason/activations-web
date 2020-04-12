@@ -3,7 +3,7 @@
     <div id="header">
       <header-component />
     </div>
-    <div class="success-payment">
+    <div class="success-payment flex-container">
       <div class="success-payment-wrapper">
         <!-- success-mark ticker -->
         <div class="success-checkmark-container">
@@ -34,6 +34,9 @@
           </div>
         </div>
       </div>
+      <div class="img-container">
+        <img src="../assets/undraw_receipt_ecdd.svg" alt="mail-sent" srcset="" />
+      </div>
     </div>
   </fragment>
 </template>
@@ -48,7 +51,7 @@ export default {
   name: 'SuccessPayment',
   components: {
     fragment: Fragment,
-    'header-component': HeaderComponent,
+    'header-component': HeaderComponent
   },
   methods: {
     resendLicenseKey() {
@@ -60,7 +63,7 @@ export default {
             bus.$emit('popup', { success: true, msg: 'Mail resend successfully please check your mails' });
             return bus.$emit('toggleLoading');
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error.response);
             if (error.response) {
               bus.$emit('popup', { success: false, msg: error.response.data.error });
@@ -73,8 +76,8 @@ export default {
           return bus.$emit('toggleLoading');
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -82,25 +85,56 @@ export default {
 @import '../scss/_mixins';
 
 .success-payment {
-  width: 100%;
-  margin: 100px 0;
+  width: 1200px;
+  margin: 100px auto;
+  position: relative;
 
   @include media-query(1300px) {
-    margin: 70px 0;
+    margin: 70px auto;
+    width: 90%;
+  }
+
+  @include media-query(670px) {
+    margin: 20px auto;
+    width: 95%;
+    flex-wrap: wrap;
   }
 
   .success-payment-wrapper {
     max-width: 540px;
     margin: 0 auto;
+    order: 1;
 
     @include media-query(670px) {
-      max-width: 95%;
+      max-width: 100%;
+      margin-top: 1rem;
+    }
+  }
+
+  .img-container {
+    margin: auto;
+
+    @media only screen and (min-width: 1280px) {
+      height: 500px;
+    }
+    @media only screen and (max-width: 1280px) {
+      height: 358px;
+    }
+    @media only screen and (max-width: 670px) {
+      height: 200px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 
   .success-content-container {
     width: 100%;
     padding: 25px;
+    background-color: #fff;
     box-shadow: 1px 2px 3px rgba(76, 175, 80, 0.5);
 
     .success-content {
@@ -173,6 +207,12 @@ export default {
  * Extracted from: SweetAlert
  * Modified by: Istiak Tridip
  */
+.success-checkmark-container {
+  @media only screen and (max-width: 670px) {
+    display: none;
+  }
+}
+
 .success-checkmark {
   width: 80px;
   height: 115px;
