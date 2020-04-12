@@ -77,7 +77,7 @@ export default {
   },
   data() {
     return {
-      isProduction: false
+      //
     };
   },
   methods: {
@@ -170,7 +170,7 @@ export default {
   },
   mounted() {
     let flutterwaveScript = document.createElement('script');
-    flutterwaveScript.setAttribute('src', this.isProduction ? 'https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js' : 'https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/flwpbf-inline.js');
+    flutterwaveScript.setAttribute('src', process.env.NODE_ENV === 'production' ? process.env.VUE_APP_PRO_SCRIPT_URL : process.env.VUE_APP_DEV_SCRIPT_URL);
     flutterwaveScript.setAttribute('type', 'text/javascript');
     document.head.appendChild(flutterwaveScript);
   }

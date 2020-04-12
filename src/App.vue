@@ -18,12 +18,12 @@ export default {
   components: {
     'footer-component': FooterComponent,
     'spinner-component': SpinnerComponent,
-    'pop-up-component': PopUpComponent,
+    'pop-up-component': PopUpComponent
   },
   data() {
     return {
       isLoading: false,
-      data: null,
+      data: null
     };
   },
 
@@ -31,10 +31,10 @@ export default {
     bus.$on('toggleLoading', () => {
       this.isLoading = !this.isLoading;
     });
-    bus.$on('popup', (data) => {
+    bus.$on('popup', data => {
       this.data = data;
     });
-  },
+  }
 };
 </script>
 

@@ -65,21 +65,21 @@ export default {
   data() {
     return {
       softwares: [],
-      search: '',
+      search: ''
       // limit: 10
     };
   },
   computed: {
-    filterSoftware: function () {
+    filterSoftware: function() {
       if (!this.search) {
         return this.softwares;
       }
 
       let filter = [];
-      let software = this.softwares.filter((software) => software.name.toLocaleLowerCase().match(this.search.toLocaleLowerCase()));
+      let software = this.softwares.filter(software => software.name.toLocaleLowerCase().match(this.search.toLocaleLowerCase()));
       filter.push(software);
       return filter[0];
-    },
+    }
   },
   beforeMount() {
     bus.$emit('toggleLoading');
@@ -87,19 +87,19 @@ export default {
   mounted() {
     axios
       .get('/api/softwares')
-      .then((response) => {
+      .then(response => {
         this.softwares = response.data.data;
         bus.$emit('toggleLoading');
       })
-      .catch((error) => {
-        bus.$emit('popup', { success: false, msg: error });
+      .catch(error => {
+        bus.$emit('popup', { success: false, msg: error.response.data.detail });
         bus.$emit('toggleLoading');
       });
 
-    bus.$on('filterSoftware', (filter_name) => {
+    bus.$on('filterSoftware', filter_name => {
       this.search = filter_name;
     });
-  },
+  }
 };
 </script>
 
