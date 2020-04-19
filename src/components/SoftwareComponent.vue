@@ -360,7 +360,7 @@ export default {
 
   // license payment
   #license-wrapper {
-    padding: 30px;
+    padding: 30px 30px 60px;
     background-color: #f1fbe157;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.39);
     border-radius: 1px;
@@ -372,7 +372,7 @@ export default {
       text-transform: uppercase;
       color: #949597;
       font-weight: 540;
-      margin: 1em 0 2em;
+      margin: 1em 0 3em;
       text-align: center;
       display: block;
       user-select: none;

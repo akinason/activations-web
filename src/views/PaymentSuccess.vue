@@ -51,7 +51,7 @@ export default {
   name: 'SuccessPayment',
   components: {
     fragment: Fragment,
-    'header-component': HeaderComponent
+    'header-component': HeaderComponent,
   },
   methods: {
     resendLicenseKey() {
@@ -63,7 +63,7 @@ export default {
             bus.$emit('popup', { success: true, msg: 'Mail resend successfully please check your mails' });
             return bus.$emit('toggleLoading');
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error.response);
             if (error.response) {
               bus.$emit('popup', { success: false, msg: error.response.data.error });
@@ -76,8 +76,8 @@ export default {
           return bus.$emit('toggleLoading');
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -102,7 +102,7 @@ export default {
 
   .success-payment-wrapper {
     max-width: 540px;
-    margin: 0 auto;
+    // margin: 0 auto;
     order: 1;
 
     @include media-query(670px) {
@@ -112,7 +112,7 @@ export default {
   }
 
   .img-container {
-    margin: auto;
+    // margin: auto;
 
     @media only screen and (min-width: 1280px) {
       height: 500px;
