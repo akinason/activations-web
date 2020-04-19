@@ -64,7 +64,6 @@ export default {
             return bus.$emit('toggleLoading');
           })
           .catch((error) => {
-            console.log(error.response);
             if (error.response) {
               bus.$emit('popup', { success: false, msg: error.response.data.error });
               return bus.$emit('toggleLoading');
