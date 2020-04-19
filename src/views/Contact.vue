@@ -8,11 +8,12 @@
         <div class="contact-container flex-container wrapper">
           <div class="contact-details">
             <h3 class="title">How can we help you?</h3>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam laudantium nostrum optio perspiciatis beatae dolores dicta dignissimos quis iusto sapiente sit atque natus, a, at fugiat, omnis ducimus? Obcaecati, doloribus?</p>
+            <p>Are you a developer or technology company wishing to distribute your applications and sell license keys using Activations? Or Are you a client who has an issue after purchasing a license? </p><br>
+            <p>Send us a mail or write us on WhatsApp using the contact details below. </p>
             <h2 class="title detail-title">Contact details</h2>
             <div class="details-container">
-              <p><span>phone: </span>(+237) 6xx xxx xxx</p>
-              <p><span>email: </span><a href="mailto:test@test.com" target="_blank">test@test.com</a></p>
+              <p><span>WhatsApp: </span><a href="https://wa.me/237691270063" target="_blank">(+237) 691270063</a></p>
+              <p><span>email: </span><a href="mailto:gloxongp@gmail.com" target="_blank">gloxongp@gmail.com</a></p>
             </div>
           </div>
           <div class="img-container">
