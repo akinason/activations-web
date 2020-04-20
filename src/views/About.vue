@@ -12,8 +12,8 @@
             <div class="title-wrapper">
               <h1 class="title">Get to know us</h1>
               <p>
-                Lorem ipsum dolor sit amet consectetur <br />
-                Id reprehenderit exercitationem sunt ratione nostrum nam consequuntur autem unde similique, aperiam impedit esse
+                <strong>Activations</strong> is a an independent software powered by Extended Limits Inc, we enable developers and 
+tech companies to focus on the core of their applications while we manage the sell of their license keys. 
               </p>
             </div>
             <div class="svg-container">
@@ -24,8 +24,9 @@
           <!-- what we offer -->
           <div class="activation-offer wrapper">
             <div class="activation-offer-container">
-              <h3 class="title offer-title">What we offer</h3>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab voluptas amet sed perspiciatis, sint sunt cupiditate maiores qui porro? Voluptate laborum exercitationem ex rerum ducimus ipsa reprehenderit optio vitae facilis!</p>
+              <h3 class="title offer-title">Why we do it</h3>
+              <p>As the world is becoming digital, software developers and software companies are moving from the traditional method of storing license keys in their applications to storing them on the cloud. But we do not store them, we generate them on the fly.</p>
+              <p></p>
             </div>
           </div>
 
@@ -33,10 +34,10 @@
           <div class="origin-wrapper wrapper">
             <div class="origin-container flex-container">
               <div class="origin">
-                <h3 class="title origin-title">Who are we?</h3>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab voluptas amet sed perspiciatis, sint sunt cupiditate maiores qui porro? Voluptate laborum exercitationem ex rerum ducimus ipsa reprehenderit optio vitae facilis!</p>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab voluptas amet sed perspiciatis, sint sunt cupiditate maiores qui porro? Voluptate laborum exercitationem ex rerum ducimus ipsa reprehenderit optio vitae facilis!</p>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab voluptas amet sed perspiciatis, sint sunt cupiditate maiores qui porro? Voluptate laborum exercitationem ex rerum ducimus ipsa reprehenderit optio vitae facilis!</p>
+                <h3 class="title origin-title">How we do it</h3>
+                <p>Activations is an independent platform for managing the sell of application license keys.</p>
+                <p>License keys are generated instantly after the client's payment has been confirmed and emailed to them.</p>
+                <p>Using our API, software developers can then check for the validity of a license key from within their application when the client enters them and send a POST request to mark the license key as USED after giving value to the client.</p>
               </div>
               <div class="origin-img">
                 <img src="../assets/undraw_team_spirit_hrr4.svg" alt="" />
@@ -51,8 +52,8 @@
               </div>
 
               <div class="know-more-content">
-                <h3 class="title know-more-title">Do you want to know more about the team?</h3>
-                <p>Working together, everything is possible.</p>
+                <h3 class="title know-more-title">Do you want to know more or have any idea? <a href="/contact">Contact us</a></h3>
+                <p>We believe we can make it better together.</p>
               </div>
 
               <div class="img-container">

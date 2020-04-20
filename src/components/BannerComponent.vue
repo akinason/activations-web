@@ -12,10 +12,9 @@
       <div class="header-content">
         <div class="content-wrapper">
           <h1>
-            Access
-            <span>2,674,500</span> application and activation
+            Access <span>unlimited</span> applications and license keys
           </h1>
-          <p>Lorem ipsum dolor sit amet consectetur.</p>
+          <p>Search Applications, download them or buy license keys.</p>
         </div>
         <!-- search bar -->
         <div class="search-container">
@@ -27,7 +26,7 @@
               </svg>
             </button>
           </div>
-          <p id="promotion-text">use application url to promote the app</p>
+          <!--<p id="promotion-text">use application url to promote the app</p> -->
         </div>
       </div>
     </div>
