@@ -69,7 +69,7 @@
             <div class="purchase-license" v-for="license in software.licenses" :key="license.id">
               <form action method="post">
                 <input readonly type="text" name="type" id="type" :value="license.type + ' billing'" />
-                <input readonly type="text" name="price" id="price" :value="'$' + license.price" />
+                <input readonly type="text" name="price" :style="license.price == 0.0 ? 'color: green' : ''" id="price" :value="license.price != 0.0 ? '$' + license.price : 'free'" />
                 <input readonly type="text" name="currency" id="currency" :value="license.currency" />
                 <input readonly type="text" name="duration" id="duration" :value="license.duration + ' days'" />
                 <router-link :to="{ path: `/software/${software.id}/license`, query: license }">buy license</router-link>

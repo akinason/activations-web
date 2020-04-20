@@ -9,7 +9,7 @@
           <div class="bill">
             <p>
               bill
-              <strong>{{ $route.query.price }} usd</strong>
+              <strong :style="$route.query.price == 0.0 ? 'color: green' : ''">{{ $route.query.price == 0.0 ? 'FREE' : $route.query.price + ' usd' }}</strong>
             </p>
           </div>
         </div>

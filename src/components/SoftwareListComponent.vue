@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       softwares: [],
-      search: ''
+      search: '',
       // limit: 10
     };
   },
@@ -76,10 +76,10 @@ export default {
       }
 
       let filter = [];
-      let software = this.softwares.filter(software => software.name.toLocaleLowerCase().match(this.search.toLocaleLowerCase()));
+      let software = this.softwares.filter((software) => software.name.toLocaleLowerCase().match(this.search.toLocaleLowerCase()));
       filter.push(software);
       return filter[0];
-    }
+    },
   },
   beforeMount() {
     bus.$emit('toggleLoading');
@@ -87,19 +87,19 @@ export default {
   mounted() {
     axios
       .get('/api/softwares')
-      .then(response => {
+      .then((response) => {
         this.softwares = response.data.data;
         bus.$emit('toggleLoading');
       })
-      .catch(error => {
+      .catch((error) => {
         bus.$emit('popup', { success: false, msg: error.response.data.detail });
         bus.$emit('toggleLoading');
       });
 
-    bus.$on('filterSoftware', filter_name => {
+    bus.$on('filterSoftware', (filter_name) => {
       this.search = filter_name;
     });
-  }
+  },
 };
 </script>
 
@@ -145,8 +145,12 @@ export default {
   .software {
     width: 100%;
     cursor: pointer;
-    transition: 205ms ease-out;
-    box-shadow: 1px 1px 2px rgba(17, 40, 46, 0.438);
+    transition: 155ms ease-out;
+    box-shadow: 0px 0.34px 1.6px 0px rgba(17, 40, 46, 0.39);
+
+    &:hover {
+      box-shadow: 0px 0.34px 2px 1px rgba(17, 40, 46, 0.274);
+    }
 
     .software-wrapper {
       display: flex;

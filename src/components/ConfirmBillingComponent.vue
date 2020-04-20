@@ -39,7 +39,7 @@
               </div>
               <div class="form-control flex-container">
                 <label for="price">price</label>
-                <input readonly id="price" :value="'$' + $route.query.price" />
+                <input readonly id="price" :style="$route.query.price == 0.0 ? 'color: green' : ''" :value="$route.query.price != 0.0 ? '$' + $route.query.price : 'Free'" />
               </div>
               <div class="form-control flex-container">
                 <label for="currency">currency</label>
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div class="btn-container flex-container">
-            <button type="submit">confirm and pay</button>
+            <button type="submit">{{ $route.query.price == 0.0 ? 'get free license' : 'confirm and pay' }}</button>
             <router-link :to="{ path: `/software/${$route.params.software_id}` }">cancel</router-link>
           </div>
         </form>
@@ -91,49 +91,72 @@ export default {
           .then((response) => {
             const data = response.data;
             // success in order request
-            try {
-              // request fluterwave payment
-              const x = window.getpaidSetup({
-                PBFPubKey: data.flutterwave_public_key,
-                customer_email: data.data.email,
-                amount: data.data.amount,
-                customer_phone: data.data.mobile,
-                currency: data.data.currency,
-                txref: data.data.reference,
-                onclose: () => {
-                  bus.$emit('toggleLoading');
-                },
-                callback: (response) => {
-                  // const txref = response.tx.txRef;
-                  if (response.tx.chargeResponseCode == '00' || response.tx.chargeResponseCode == '0') {
-                    // successful transaction
-                    try {
-                      // update server order
-                      axios
-                        .put(`api/orders/${data.data.id}`, { payment_response: response })
-                        .then((response) => {
-                          return this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
-                        })
-                        .catch((error) => {
-                          if (error.response) {
-                            return bus.$emit('popup', { success: false, msg: error.response.data.error });
-                          }
-                        });
-                    } catch (error) {
-                      // failed update order
+            if (this.$route.query.price == 0.0) {
+              // successful transaction
+              try {
+                // update server order
+                axios
+                  .put(`api/orders/${data.data.id}`, { payment_response: {} })
+                  .then((response) => {
+                    bus.$emit('toggleLoading');
+                    return this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
+                  })
+                  .catch((error) => {
+                    bus.$emit('toggleLoading');
+                    if (error.response) {
+                      return bus.$emit('popup', { success: false, msg: error.response.data.error });
+                    }
+                  });
+              } catch (error) {
+                // failed update order
+                return bus.$emit('popup', { success: false, msg: 'Request failed' });
+              }
+            } else {
+              // amount > 0.0
+              try {
+                // request fluterwave payment
+                const x = window.getpaidSetup({
+                  PBFPubKey: data.flutterwave_public_key,
+                  customer_email: data.data.email,
+                  amount: data.data.amount,
+                  customer_phone: data.data.mobile,
+                  currency: data.data.currency,
+                  txref: data.data.reference,
+                  onclose: () => {
+                    bus.$emit('toggleLoading');
+                  },
+                  callback: (response) => {
+                    // const txref = response.tx.txRef;
+                    if (response.tx.chargeResponseCode == '00' || response.tx.chargeResponseCode == '0') {
+                      // successful transaction
+                      try {
+                        // update server order
+                        axios
+                          .put(`api/orders/${data.data.id}`, { payment_response: response })
+                          .then((response) => {
+                            return this.$router.replace({ path: `/software/payment/${response.data.data.id}`, query: { amount: response.data.data.amount, currency: response.data.data.currency, name: response.data.data.name, email: response.data.data.email, reference: response.data.data.reference } });
+                          })
+                          .catch((error) => {
+                            if (error.response) {
+                              return bus.$emit('popup', { success: false, msg: error.response.data.error });
+                            }
+                          });
+                      } catch (error) {
+                        // failed update order
+                        return bus.$emit('popup', { success: false, msg: 'Request failed' });
+                      }
+                    } else {
+                      // failed transaction
                       return bus.$emit('popup', { success: false, msg: 'Request failed' });
                     }
-                  } else {
-                    // failed transaction
-                    return bus.$emit('popup', { success: false, msg: 'Request failed' });
-                  }
-                  x.close();
-                },
-              });
-            } catch (error) {
-              if (error) {
-                bus.$emit('toggleLoading');
-                return bus.$emit('popup', { success: false, msg: 'Request failed' });
+                    x.close();
+                  },
+                });
+              } catch (error) {
+                if (error) {
+                  bus.$emit('toggleLoading');
+                  return bus.$emit('popup', { success: false, msg: 'Request failed' });
+                }
               }
             }
           })
