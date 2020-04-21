@@ -70,7 +70,7 @@
               <form action method="post">
                 <input readonly type="text" name="type" id="type" :value="license.type + ' billing'" />
                 <input readonly type="text" name="price" :style="license.price == 0.0 ? 'color: green' : ''" id="price" :value="license.price != 0.0 ? '$' + license.price : 'free'" />
-                <input readonly type="text" name="currency" id="currency" :value="license.currency" />
+                <input readonly type="text" name="currency" id="currency" :style="license.price == 0.0 ? 'display: none' : 'display: block'" :value="license.currency" />
                 <input readonly type="text" name="duration" id="duration" :value="license.duration + ' days'" />
                 <router-link :to="{ path: `/software/${software.id}/license`, query: license }">buy license</router-link>
               </form>
@@ -366,16 +366,17 @@ export default {
   #license-wrapper {
     padding: 30px 30px 60px;
     background-color: #f1fbe157;
+    background-image: url('../assets/bill-3.4s-1084px.png');
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.39);
     border-radius: 1px;
 
     span.labels {
-      font-size: 16px;
+      font-size: 19px;
       letter-spacing: 0.65px;
       line-height: 1.34;
       text-transform: uppercase;
-      color: #949597;
-      font-weight: 540;
+      color: #252525;
+      font-weight: 560;
       margin: 1em 0 3em;
       text-align: center;
       display: block;
@@ -389,6 +390,8 @@ export default {
     margin: auto;
     justify-content: space-between;
     align-items: center;
+    z-index: 1;
+    background: inherit;
 
     @include media-query(1460px, 2600px) {
       max-width: 560px;
@@ -414,7 +417,7 @@ export default {
         width: 100%;
         position: relative;
         border-radius: 5px;
-        background-color: rgba(126, 124, 245, 0.027);
+        background-color: #fafef5ce;
 
         input {
           width: 100%;

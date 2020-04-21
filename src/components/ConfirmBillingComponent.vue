@@ -41,7 +41,7 @@
                 <label for="price">price</label>
                 <input readonly id="price" :style="$route.query.price == 0.0 ? 'color: green' : ''" :value="$route.query.price != 0.0 ? '$' + $route.query.price : 'Free'" />
               </div>
-              <div class="form-control flex-container">
+              <div class="form-control flex-container" :style="$route.query.price == 0.0 ? 'display: none' : 'display: block'">
                 <label for="currency">currency</label>
                 <input readonly id="currency" name="currency" :value="$route.query.currency" />
               </div>
