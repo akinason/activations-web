@@ -4,7 +4,7 @@
       <header-component id="header-component" />
     </div>
     <div class="software-wrapper">
-      <div class="software" v-if="software">
+      <div class="software is_showing" v-if="software">
         <!-- app description -->
         <div class="app-details flex-container">
           <div class="details">
@@ -117,8 +117,12 @@ export default {
         bus.$emit('toggleLoading');
       })
       .catch((error) => {
+        if (error.response) {
+          bus.$emit('popup', { success: false, msg: error.response.data.detail });
+          return bus.$emit('toggleLoading');
+        }
         bus.$emit('popup', { success: false, msg: error });
-        bus.$emit('toggleLoading');
+        return bus.$emit('toggleLoading');
       });
   },
 };

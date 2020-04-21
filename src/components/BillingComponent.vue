@@ -3,7 +3,7 @@
     <div id="header">
       <header-component id="header-component" />
     </div>
-    <div class="billing-wrapper">
+    <div class="billing-wrapper is_showing">
       <div class="billing flex-container">
         <div class="bill-container">
           <div class="bill">

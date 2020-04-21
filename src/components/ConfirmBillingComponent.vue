@@ -3,7 +3,7 @@
     <div id="header">
       <header-component />
     </div>
-    <div class="confirm-billing-container modal">
+    <div class="confirm-billing-container modal is_showing">
       <div class="confirm-billing-wrapper">
         <h3 id="title">verify &amp; confirm payments</h3>
         <form action="" method="post" @submit.prevent="generatePayment">

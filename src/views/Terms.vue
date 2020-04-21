@@ -3,7 +3,7 @@
     <div id="header">
       <header-component />
     </div>
-    <div class="terms">
+    <div class="terms is_showing">
       <div class="terms-wrapper wrapper">
         <div class="terms-container">
           <h3 class="title">Activation Terms of use</h3>

@@ -3,7 +3,7 @@
     <div id="header">
       <header-component />
     </div>
-    <div class="success-payment flex-container">
+    <div class="success-payment flex-container is_showing">
       <div class="success-payment-wrapper">
         <!-- success-mark ticker -->
         <div class="success-checkmark-container">

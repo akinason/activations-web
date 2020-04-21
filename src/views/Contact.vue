@@ -3,13 +3,14 @@
     <div id="header">
       <header-component />
     </div>
-    <div class="contact">
+    <div class="contact is_showing">
       <div class="contact-wrapper">
         <div class="contact-container flex-container wrapper">
           <div class="contact-details">
             <h3 class="title">How can we help you?</h3>
-            <p>Are you a developer or technology company wishing to distribute your applications and sell license keys using Activations? Or Are you a client who has an issue after purchasing a license? </p><br>
-            <p>Send us a mail or write us on WhatsApp using the contact details below. </p>
+            <p>Are you a developer or technology company wishing to distribute your applications and sell license keys using Activations? Or Are you a client who has an issue after purchasing a license?</p>
+            <br />
+            <p>Send us a mail or write us on WhatsApp using the contact details below.</p>
             <h2 class="title detail-title">Contact details</h2>
             <div class="details-container">
               <p><span>WhatsApp: </span><a href="https://wa.me/237691270063" target="_blank">(+237) 691270063</a></p>

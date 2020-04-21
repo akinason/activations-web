@@ -3,7 +3,7 @@
     <div id="header">
       <header-component />
     </div>
-    <div class="about">
+    <div class="about is_showing">
       <div class="about-container">
         <div class="about-wrapper">
           <!-- header -->
@@ -11,10 +11,7 @@
             <!-- title wrapper -->
             <div class="title-wrapper">
               <h1 class="title">Get to know us</h1>
-              <p>
-                <strong>Activations</strong> is a an independent software powered by Extended Limits Inc, we enable developers and 
-tech companies to focus on the core of their applications while we manage the sell of their license keys. 
-              </p>
+              <p><strong>Activations</strong> is a an independent software powered by Extended Limits Inc, we enable developers and tech companies to focus on the core of their applications while we manage the sell of their license keys.</p>
             </div>
             <div class="svg-container">
               <img src="../assets/undraw_feeling_proud_qne1.svg" alt="img" srcset="" />

@@ -1,8 +1,8 @@
 <template>
-  <div id="software-list">
+  <div id="software-list" class="is_showing">
     <div class="software-list-container">
       <div class="software-list" v-if="filterSoftware.length">
-        <div class="software" v-for="software in filterSoftware" :key="software.id">
+        <div class="software is_showing" v-for="software in filterSoftware" :key="software.id">
           <router-link :to="{ path: '/software/' + software.id }" class="software-wrapper">
             <!-- img -->
             <div class="img-container">
@@ -34,21 +34,21 @@
       </div>
     </div>
     <!-- pagination container -->
-    <div class="pagination-container">
+    <div class="pagination-container" v-if="softwares.length > limit">
       <div class="pagination flex-container">
-        <div class="page active">
-          <p>1</p>
+        <div class="page dot active" @click="update_by_dots">
+          <p>{{ current_page > 2 ? current_page - 2 : 1 }}</p>
         </div>
-        <div class="page">
-          <p>2</p>
+        <div class="page dot" v-if="softwares.length > limit" @click="update_by_dots">
+          <p>{{ current_page > 2 ? current_page - 1 : 2 }}</p>
         </div>
-        <div class="page">
-          <p>3</p>
+        <div class="page dot" v-if="softwares.length > limit * 2" @click="update_by_dots">
+          <p>{{ current_page > 3 ? current_page + 0 : 3 }}</p>
         </div>
-        <div class="page more">
-          <p>...</p>
+        <div class="page dot more" v-if="softwares.length > limit * 3">
+          <p>{{ current_page > 2 ? current_page + 1 : '...' }}</p>
         </div>
-        <div class="page btn-next">
+        <div class="page btn-next" @click="update_visible_software(limit, current_page + 1, true)">
           <p>next</p>
         </div>
       </div>
@@ -66,19 +66,69 @@ export default {
     return {
       softwares: [],
       search: '',
-      // limit: 10
+      // pagination variable
+      limit: 1,
+      current_page: 0,
+      visible_software: [],
     };
   },
   computed: {
     filterSoftware: function() {
       if (!this.search) {
-        return this.softwares;
+        return this.visible_software;
       }
 
       let filter = [];
       let software = this.softwares.filter((software) => software.name.toLocaleLowerCase().match(this.search.toLocaleLowerCase()));
       filter.push(software);
       return filter[0];
+    },
+  },
+
+  methods: {
+    update_by_dots(event) {
+      this.update_visible_software(this.limit, parseInt(event.target.textContent) - 1, true);
+    },
+
+    update_visible_software(limit, page_number, event) {
+      const dots = document.getElementsByClassName('dot');
+
+      this.current_page = page_number;
+
+      // create a copy of this.software into software variable
+      let softwares = [];
+      for (let i = 0; i < this.softwares.length; i++) {
+        softwares[i] = this.softwares[i];
+      }
+
+      // pagination function
+      this.visible_software = softwares.splice(page_number * limit, page_number * limit + limit);
+      if (this.visible_software.length < 1) {
+        // if there's no object in the softwares restart from page 0
+        this.current_page = 0;
+        page_number = 0;
+        this.visible_software = softwares.splice(this.current_page * limit, this.current_page * limit + limit);
+      }
+      // utils cases for better performance
+
+      if (this.visible_software.length > limit) {
+        // if object is more than limit splice according to limits
+        this.visible_software = this.visible_software.splice(0, limit);
+      }
+
+      if (event) {
+        // dom and mounted check
+        Array.from(dots, (dot) => {
+          dot.classList.remove('active');
+        });
+
+        if (dots[page_number] == undefined) {
+          dots[3].classList.add('active');
+        } else {
+          dots[page_number].classList.add('active');
+        }
+      }
+      //
     },
   },
   beforeMount() {
@@ -89,11 +139,17 @@ export default {
       .get('/api/softwares')
       .then((response) => {
         this.softwares = response.data.data;
+        this.update_visible_software(this.limit, this.current_page, false);
         bus.$emit('toggleLoading');
       })
       .catch((error) => {
-        bus.$emit('popup', { success: false, msg: error.response.data.detail });
-        bus.$emit('toggleLoading');
+        if (error.response) {
+          bus.$emit('popup', { success: false, msg: error.response.data.detail });
+          return bus.$emit('toggleLoading');
+        }
+
+        bus.$emit('popup', { success: false, msg: error });
+        return bus.$emit('toggleLoading');
       });
 
     bus.$on('filterSoftware', (filter_name) => {
@@ -257,7 +313,7 @@ export default {
         }
       }
       .page.active {
-        background-color: #ddd;
+        background-color: #ddd !important;
       }
       .page.more {
         // padding: 0;
