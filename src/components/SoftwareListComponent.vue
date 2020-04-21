@@ -67,7 +67,7 @@ export default {
       softwares: [],
       search: '',
       // pagination variable
-      limit: 1,
+      limit: 10,
       current_page: 0,
       visible_software: [],
     };
