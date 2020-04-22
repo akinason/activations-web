@@ -72,7 +72,7 @@
                 <input readonly type="text" name="price" :style="license.price == 0.0 ? 'color: green' : ''" id="price" :value="license.price != 0.0 ? '$' + license.price : 'free'" />
                 <input readonly type="text" name="currency" id="currency" :style="license.price == 0.0 ? 'display: none' : 'display: block'" :value="license.currency" />
                 <input readonly type="text" name="duration" id="duration" :value="license.duration + ' days'" />
-                <router-link :to="{ path: `/software/${software.id}/license`, query: license }">buy license</router-link>
+                <router-link :to="{ path: `/software/${software.id}/license`, query: license }">{{ license.price != 0.0 ? 'buy license' : 'get license' }}</router-link>
               </form>
             </div>
           </div>
@@ -365,8 +365,8 @@ export default {
   // license payment
   #license-wrapper {
     padding: 30px 30px 60px;
-    background-color: #f1fbe157;
-    background-image: url('../assets/bill-3.4s-1084px.png');
+    background-color: #3d463a;
+    background-image: url('../assets/bill-1s-1084px.png');
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.39);
     border-radius: 1px;
 
@@ -375,7 +375,7 @@ export default {
       letter-spacing: 0.65px;
       line-height: 1.34;
       text-transform: uppercase;
-      color: #252525;
+      color: #fbfbfb;
       font-weight: 560;
       margin: 1em 0 3em;
       text-align: center;
@@ -417,7 +417,7 @@ export default {
         width: 100%;
         position: relative;
         border-radius: 5px;
-        background-color: #fafef5ce;
+        background-color: #fafef5bd;
 
         input {
           width: 100%;

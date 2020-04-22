@@ -11,9 +11,7 @@
       <!-- header content -->
       <div class="header-content">
         <div class="content-wrapper">
-          <h1>
-            Access <span>unlimited</span> applications and license keys
-          </h1>
+          <h1>Access <span>unlimited</span> applications and license keys</h1>
           <p>Search Applications, download them or buy license keys.</p>
         </div>
         <!-- search bar -->
