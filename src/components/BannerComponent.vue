@@ -119,11 +119,15 @@ header {
       text-align: center;
 
       h1 {
-        font-size: calc(32px + (600vw - 2880px) / 920);
+        font-size: calc(30px + (600vw - 2880px) / 920);
         font-weight: 560;
         margin-bottom: 0.62em;
         line-height: 1.5;
         color: #fff;
+
+        @media only screen and (max-width: 767px) {
+          font-size: calc(27px + (600vw - 2880px) / 920);
+        }
 
         span {
           color: #4ad295;
