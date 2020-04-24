@@ -20,10 +20,10 @@
           <router-link to="/contact">Contact</router-link>
         </li>
         <li>
-          <a href="htts://account.gloxoninc.com/login/oauth/9288975281" rel="noopener noreferrer">Login</a>
+          <a href="https://account.gloxoninc.com/login/oauth/9288973975281" rel="noopener noreferrer">Login</a>
         </li>
         <li>
-          <a href="htts://account.gloxoninc.com/login/oauth/9288975281" rel="noopener noreferrer">Signup</a>
+          <a href="https://account.gloxoninc.com/login/oauth/9288973975281" rel="noopener noreferrer">Signup</a>
         </li>
       </ul>
     </nav>
